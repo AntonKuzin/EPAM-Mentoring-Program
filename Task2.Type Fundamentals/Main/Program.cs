@@ -11,7 +11,7 @@ namespace Main
     {
         static void Main(string[] args)
         {
-            Console.WriteLine(Methods.Calculate(2));
+            Console.WriteLine(Methods.Calculate(5));
         }
     }
 }

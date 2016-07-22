@@ -8,9 +8,29 @@ namespace Library
 {
     public static class Methods
     {
-        public static int Calculate(int count)
+        public static int Calculate(int N)
         {
-            return 0;
+            double result = 0;
+            double count = 1, temp = 2;
+
+            while(count <= N)
+            {
+                if (IsSimple((int)temp))
+                    result += temp / count++;
+                ++temp;
+            }
+
+            return (int)Math.Floor(result);
+        }
+
+        private static bool IsSimple(int number)
+        {
+            for (int i = 2; i <= Math.Sqrt(number); i++)
+            {
+                if (number % i == 0)
+                    return false;
+            }
+            return true;
         }
     }
 }
