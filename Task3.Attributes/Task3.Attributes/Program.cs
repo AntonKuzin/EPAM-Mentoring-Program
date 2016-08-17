@@ -10,13 +10,12 @@ namespace Task3.Attributes
     {
         static void Main(string[] args)
         {
-            var instance = new TestClass();
             Type type = typeof(TestClass);
             var attrs = type.GetCustomAttributes(false);
 
-            foreach (var roleAttr in attrs)
+            foreach (var attr in attrs)
             {
-                Console.WriteLine(roleAttr);
+                Console.WriteLine(attr);
             }
 
         }
