@@ -11,9 +11,17 @@ namespace StringParserLibrary
         public static int Parse(string strToParse)
         {
             if (string.IsNullOrWhiteSpace(strToParse))
-                throw new ArgumentException("Cannot parse an empty string to integer.");
+                throw new FormatException("Cannot parse an empty string to integer.");
 
             return ParseUnsigned(strToParse);
+        }
+
+        public static int ParseInt(string strToParse)
+        {
+            if (string.IsNullOrWhiteSpace(strToParse))
+                throw new FormatException("Cannot parse an empty string to integer.");
+
+            return ParseUnsignedInt(strToParse);
         }
 
         private static int ParseUnsigned(string unsigned)
@@ -21,6 +29,13 @@ namespace StringParserLibrary
             if (unsigned.StartsWith("-"))
                 return -1 * ParsePositive(unsigned.Remove(0, 1));
             return ParsePositive(unsigned);
+        }
+
+        private static int ParseUnsignedInt(string unsigned)
+        {
+            if (unsigned.StartsWith("-"))
+                return -1 * ParseInteregPart(unsigned.Remove(0, 1));
+            return ParseInteregPart(unsigned);
         }
 
         private static int ParsePositive(string signed)
@@ -41,12 +56,12 @@ namespace StringParserLibrary
                 catch (IndexOutOfRangeException)
                 {
 
-                    throw new ArgumentException("Cannot parse a string containing only a separator to integer.");
+                    throw new FormatException("Cannot parse a string containing only a separator to integer.");
                 }
             }
 
             if (parts.Length > 2)
-                throw new ArgumentException($"Cannot parse \"{signed}\" to integer.");
+                throw new FormatException($"Cannot parse \"{signed}\" to integer.");
 
 
             return ParseInteregPart(parts[0]) + ParseRealPart(parts[1]);
@@ -64,7 +79,7 @@ namespace StringParserLibrary
                 }
                 catch (KeyNotFoundException)
                 {
-                    throw new ArgumentException($"Cannot parse symbol {integerPart[i]}");
+                    throw new FormatException($"Cannot parse symbol {integerPart[i]}");
                 }
                 order *= 10;
             }
@@ -75,12 +90,12 @@ namespace StringParserLibrary
         private static int ParseRealPart(string realPart)
         {
             if (string.IsNullOrWhiteSpace(realPart))
-                throw new ArgumentException("Real part cannot be empty.");
+                throw new FormatException("Real part cannot be empty.");
 
             foreach (var item in realPart)
             {
                 if(!Digits.ContainsKey(item))
-                    throw new ArgumentException($"Cannot parse symbol {item}");
+                    throw new FormatException($"Cannot parse symbol {item}");
             }
             
             if (Digits[realPart[0]] < 5)

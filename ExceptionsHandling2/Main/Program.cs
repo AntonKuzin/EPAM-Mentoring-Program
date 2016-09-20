@@ -16,10 +16,13 @@ namespace Main
                 var strToParse = Console.ReadLine();
                 try
                 {
-                    var result = StringParser.Parse(strToParse);
+                    //var result = StringParser.ParseInt(strToParse);
+
+                    var result = int.Parse(strToParse);
+
                     Console.WriteLine($"Parsed value is {result}");
                 }
-                catch (ArgumentException ex)
+                catch (FormatException ex)
                 {
                     Console.WriteLine(ex.Message);
                 }
