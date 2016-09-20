@@ -16,9 +16,9 @@ namespace Main
                 var strToParse = Console.ReadLine();
                 try
                 {
-                    //var result = StringParser.ParseInt(strToParse);
+                    var result = StringParser.ParseInt(strToParse);
 
-                    var result = int.Parse(strToParse);
+                    //var result = int.Parse(strToParse);
 
                     Console.WriteLine($"Parsed value is {result}");
                 }
