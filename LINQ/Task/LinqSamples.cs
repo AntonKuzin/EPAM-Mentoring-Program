@@ -15,6 +15,7 @@ using System.Windows.Forms.VisualStyles;
 using System.Xml.Linq;
 using SampleSupport;
 using Task.Data;
+using System.Globalization;
 
 // Version Mad01
 
@@ -134,7 +135,7 @@ namespace SampleQueries
 
         [Category("Restriction Operators")]
         [Title("Task 7")]
-        [Description("Group products by categories, inside the groups - by availability, in the last group sort by the price.")]
+        [Description("Group products by categories, inside the groups - by availability, sort the last group by the price.")]
         public void Linq7()
         {
             var products = dataSource.Products.GroupBy(p => p.Category)
@@ -146,6 +147,58 @@ namespace SampleQueries
                 {
                     ObjectDumper.Write(group); 
                 }
+            }
+        }
+
+        [Category("Restriction Operators")]
+        [Title("Task 8")]
+        [Description("Group products in three groups by the price")]
+        public void Linq8()
+        {
+            var products = dataSource.Products.OrderBy(p => p.UnitPrice)
+                .GroupBy(p =>
+                {
+                    if (p.UnitPrice < 30)
+                        return "дешевый";
+                    if (p.UnitPrice >= 30 && p.UnitPrice < 60)
+                        return "средний";
+                    if (p.UnitPrice >= 60)
+                        return "дорогой";
+                    return "";
+                });
+
+            foreach (var item in products)
+            {
+                ObjectDumper.Write(item);
+            }
+        }
+
+        [Category("Restriction Operators")]
+        [Title("Task 9")]
+        [Description("Calculate average order price per city and the average orders count per city.")]
+        public void Linq9()
+        {
+            var data = dataSource.Customers.GroupBy(c => c.City)
+                .Select(gr => new { city = gr.Key,
+                    averagePrice = gr.Average(c => c.Orders.Sum(o => o.Total)),
+                    averageCount = gr.Average(c => c.Orders.Count()) });
+
+            foreach (var item in data)
+            {
+                ObjectDumper.Write(item);
+            }
+        }
+
+        [Category("Restriction Operators")]
+        [Title("Task 10")]
+        [Description("")]
+        public void Linq10()
+        {
+            var data = dataSource.Customers.Select(c => new { name = c.CompanyName, orders = c.Orders});
+
+            foreach (var item in data)
+            {
+                ObjectDumper.Write(item);
             }
         }
 
