@@ -49,19 +49,17 @@ namespace SampleQueries
         [Description("All suppliers in the same country and city with the customer.")]
         public void Linq2()
         {
-            var customers = dataSource.Customers;
+            var data = dataSource.Customers.Select(c => new {customer = c,
+                suppliers = dataSource.Suppliers.Where(s => s.City == c.City && s.Country == c.Country) });
 
-            foreach (var p in customers)
+            foreach (var p in data)
             {
-                var suppliers = dataSource.Suppliers.Where(t => t.Country == p.Country && t.City == p.City);
-                Console.WriteLine("Customer:");
-                ObjectDumper.Write(p);
-                Console.WriteLine("Suppliers:");
-                foreach (var supplier in suppliers)
+                if (p.suppliers.Count() > 0)
                 {
-                    ObjectDumper.Write(supplier);
+                    ObjectDumper.Write(p.customer);
+                    ObjectDumper.Write(p.suppliers);
+                    Console.WriteLine(); 
                 }
-                Console.WriteLine();
             }
         }
 
